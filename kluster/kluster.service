@@ -1,0 +1,9 @@
+[Unit]
+Description=Footloose/Ignite Kubernetes Cluster service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/kluster.sh
+
+[Install]
+WantedBy=multi-user.target
