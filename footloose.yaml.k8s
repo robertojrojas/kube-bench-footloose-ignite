@@ -27,3 +27,4 @@ machines:
         "<ABSOLUTE_PATH>/run/k8s-vars.sh": "/etc/profile.d/02-k8s.sh"
         "<ABSOLUTE_PATH>/run/config-join.yaml": "/kubeadm-join.yaml"
         "<ABSOLUTE_PATH>/k8s-worker.sh": "/usr/bin/kluster.sh"
+        "<ABSOLUTE_PATH>/run/admin.conf": "/admin.conf"
