@@ -53,58 +53,50 @@ docker build -t robertojrojas/ignite-kubeadm:kluster-v1 .
 cd ..
 
 ## View the footloose config
-vi footloose.yaml.k8s
+#vi footloose.yaml.k8s
 
 sed "s,<ABSOLUTE_PATH>,$(pwd),g" footloose.yaml.k8s > footloose.yaml.k8s.mod
 
 # make sure DNS is setup correctly.
 # You might need to add the following to /etc/hosts
 # 172.17.0.2 firekube.luxas.dev
-ping firekube.luxas.dev
+#ping firekube.luxas.dev
 
 ## create cluster vms
 footloose --config footloose.yaml.k8s.mod create
 
-# Troubleshooting
-ignite ssh -i ./cluster-key cluster-master0
 
 # This is needed to route requests to k8s
 docker run -d -v $(pwd)/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg -p 6443:443 haproxy:alpine
 
-
 # Troubleshooting
-ignite ps -a
+#ignite ssh -i ./cluster-key cluster-master0
+#ignite ps -a
 
-docker ps -a
+#docker ps -a
 
-docker images
+#docker images
 
 # 3-5 mins
 export KUBECONFIG=$(pwd)/run/admin.conf
-kubectl get nodes
+#kubectl get nodes
 
 # 5+ mins worker should be online
-kubectl get pod
+#kubectl get pod
 
+kubectl get nodes | grep ' Ready    <none>' > /dev/null
+until [ $? -eq 0 ]; do
+   echo 'waiting for worker to be ready...'
+   sleep 5s
+   kubectl get nodes | grep ' Ready    <none>' > /dev/null
+done
 
 # Execute the kube-bench on a worker node.
 kubectl apply -f job-worker.yaml
 
+echo "wait for job to execute..."
+sleep 10s
 # Take a look at the kube-bench output
 kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
-
-# Clean up
-footloose delete --config footloose.yaml.k8s.mod
-
-ignite rmi $(ignite images -q)
-
-ignite rmk $(ignite kernel -q)
-
-docker stop $(docker ps -qa)
-
-docker rm $(docker ps -qa)
-
-docker rmi $(docker images -q)
-
 
 
