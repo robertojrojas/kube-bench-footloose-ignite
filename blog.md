@@ -122,6 +122,7 @@ wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite
 wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/kluster/build-docker.sh
 wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/kluster/kluster.service
 wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/kluster/kluster.sh
+chmod +x kluster.sh
 chmod +x build-docker.sh
 ./build-docker.sh
 cd ..
@@ -143,6 +144,9 @@ cd ..
 # wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-master.sh
 
 # wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-worker.sh
+
+chmod +x k8s-master.sh
+chmod +x k8s-worker.sh
 
 ```
 
