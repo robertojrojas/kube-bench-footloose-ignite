@@ -90,6 +90,7 @@ Note:
  This requires Go v1.12+ to be installed on your system
  
 ```console
+git clone https://github.com/weaveworks/footloose.git
 cd footloose
 go build
 mv footloose /usr/local/bin
@@ -112,7 +113,7 @@ cd ..
 ```
 
 # Build kluster Docker image
-# This image is a workaround to provide the ability to inject custom scripts into the VMs
+### This image is a workaround to provide the ability to inject custom scripts into the VMs
 
 ```console
 # mkdir kluster
@@ -202,6 +203,8 @@ waiting for worker to be ready...
 # and wait for the CIS benchmark to execute to completion.
 
 ```console
+# wget  https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/job-worker.yaml
+
 # kubectl apply -f job-worker.yaml
 
 # echo "wait for the kube-bench to execute..."
@@ -210,7 +213,7 @@ waiting for worker to be ready...
 
 # Let's take a look at the kube-bench output
 ```console
-kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
+$ kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
 ```
 
 The results from running the kube-bench would be similar to the following:
