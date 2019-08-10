@@ -107,7 +107,7 @@ cd ..
 # Prepare cluster files
 
 ```console
-# wget https://raw.githubusercontent.com/robertojrojas/ignite/master/images/kubeadm/prepare.sh
+# wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/prepare.sh
 # chmod +x prepare.sh
 # ./prepare.sh
 ```
