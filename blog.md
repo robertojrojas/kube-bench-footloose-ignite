@@ -314,3 +314,6 @@ chmod 644 <filename>
 ```
 
 
+# Here is screen recording of the above steps:
+
+[![asciicast](https://asciinema.org/a/C1GzS5ndlbOMUf1G9UftZjd7g.svg)](https://asciinema.org/a/C1GzS5ndlbOMUf1G9UftZjd7g)
