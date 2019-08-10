@@ -100,16 +100,16 @@ cd ..
 # Install kubectl
 ```console
 # wget https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl
-# chmod +x kubectl
-# mv kubectl /usr/local/bin
+  chmod +x kubectl
+  mv kubectl /usr/local/bin
 ```
 
 # Prepare cluster files
 
 ```console
 # wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/prepare.sh
-# chmod +x prepare.sh
-# ./prepare.sh
+  chmod +x prepare.sh
+  ./prepare.sh
 ```
 
 # Build kluster Docker image
