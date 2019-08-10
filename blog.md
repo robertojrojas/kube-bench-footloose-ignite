@@ -28,6 +28,8 @@ in mind, we can create a VM with nested Virtualization using [Vagrant](https://w
 
 The following diagram depicts the scenario I'll be covering:
 
+![Footoolose-Ignite-k8s-kube-bench](kubench-ignite-integration.png)
+
 Here is a snippet of a Vagrantfile:
 
 ```v
