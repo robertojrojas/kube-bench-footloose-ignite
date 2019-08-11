@@ -301,7 +301,6 @@ spec:
 # Deploy the kube-bench manifest to the kubernetes cluster
 ```console
 kubectl apply -f job-worker.yaml
-
 echo "wait for the kube-bench to execute..."
 sleep 10s
 ```
@@ -311,10 +310,10 @@ sleep 10s
 kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
 ```
 
-The results from running the kube-bench would be similar to the following:
+The results from running the **`kube-bench`** would be similar to the following:
 
 
-```javascript
+```console
 [INFO] 2 Worker Node Security Configuration
 [INFO] 2.1 Kubelet
 [PASS] 2.1.1 Ensure that the --anonymous-auth argument is set to false (Scored)
