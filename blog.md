@@ -68,7 +68,7 @@ end
 Once the VM is up and running, `sudo -i` , create directory `work`, and we can start setting it up.
 
 ```console
-$ vagrant up
+$ vagrant up --provider=libvirt
 $ vagrant ssh
 $ sudo -i
 # mkdir work && cd work
