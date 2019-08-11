@@ -54,21 +54,21 @@ $ sudo -i
 # mkdir work && cd work
 ```
 
-
+# All the steps from this point forward will be performed under `root` priviledges 
 
 # Dependencies
 
 We'll start by installing some dependencies:
 
 ```console
-# apt-get update && apt-get install -y --no-install-recommends dmsetup openssh-client git binutils
+apt-get update && apt-get install -y --no-install-recommends dmsetup openssh-client git binutils
 ```
 
 # Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) 
 
 # Install Go https://golang.org/dl/
 ```console
-# wget -c https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz -O - | tar -C /usr/local  -xz
+wget -c https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz -O - | tar -C /usr/local  -xz
 export PATH=/usr/local/go/bin:$PATH
 ```
 
@@ -99,25 +99,24 @@ cd ..
 
 # Install kubectl
 ```console
-# wget https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl
-  chmod +x kubectl
-  mv kubectl /usr/local/bin
+wget https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl  chmod +x kubectl
+mv kubectl /usr/local/bin
 ```
 
 # Prepare cluster files
 
 ```console
-# wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/prepare.sh
-  chmod +x prepare.sh
-  ./prepare.sh
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/prepare.sh
+chmod +x prepare.sh
+./prepare.sh
 ```
 
 # Build kluster Docker image
 ### This image is a workaround to provide the ability to inject custom scripts into the VMs
 
 ```console
-# mkdir kluster
-# cd kluster
+mkdir kluster
+cd kluster
 wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/kluster/Dockerfile
 wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/kluster/build-docker.sh
 wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/kluster/kluster.service
@@ -131,9 +130,9 @@ cd ..
 # Get the footloose config file
 
 ```console
-# wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/footloose.yaml.k8s
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/footloose.yaml.k8s
 
-# sed "s,<ABSOLUTE_PATH>,$(pwd),g" footloose.yaml.k8s > footloose.yaml.k8s.mod
+sed "s,<ABSOLUTE_PATH>,$(pwd),g" footloose.yaml.k8s > footloose.yaml.k8s.mod
 ```
 
 # Let's take a look at the `footloose.yaml.k8s` file
@@ -195,11 +194,11 @@ Here is a snippet of possible `ignite` properties that could be used here:
 # Get Kubernetes scripts
 
 ```console
-# wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/haproxy.cfg
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/haproxy.cfg
 
-# wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-master.sh
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-master.sh
 
-# wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-worker.sh
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-worker.sh
 
 chmod +x k8s-master.sh
 chmod +x k8s-worker.sh
@@ -210,25 +209,25 @@ chmod +x k8s-worker.sh
 ## Instantiate the cluster vms
 
 ```console
-# footloose --config footloose.yaml.k8s.mod create
+footloose --config footloose.yaml.k8s.mod create
 ```
 
 # This is needed to route requests to k8s
 ```console
-# docker run -d -v $(pwd)/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg -p 6443:443 haproxy:alpine
+docker run -d -v $(pwd)/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg -p 6443:443 haproxy:alpine
 ```
 
 # Setup Kubectl to have access to the cluster running on those vms
 
 ```console
-# export KUBECONFIG=$(pwd)/run/admin.conf
+export KUBECONFIG=$(pwd)/run/admin.conf
 ```
 
 # Wait for the kubernetes worker ( the 2nd vm) to come up and join the cluster
 
 ```console
-# kubectl get nodes | grep ' Ready    <none>' > /dev/null
-# until [ $? -eq 0 ]; do
+kubectl get nodes | grep ' Ready    <none>' > /dev/null
+until [ $? -eq 0 ]; do
    echo 'waiting for worker to be ready...'
    sleep 5s
    kubectl get nodes | grep ' Ready    <none>' > /dev/null
@@ -257,7 +256,7 @@ waiting for worker to be ready...
 # and wait for the CIS benchmark to execute to completion.
 
 ```console
-# wget  https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/job-worker.yaml
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/job-worker.yaml
 ```
 
 # Let's take a look at the `job-worker.yaml` file
@@ -301,21 +300,21 @@ spec:
 
 # Deploy the kube-bench manifest to the kubernetes cluster
 ```console
-# kubectl apply -f job-worker.yaml
+kubectl apply -f job-worker.yaml
 
-# echo "wait for the kube-bench to execute..."
-# sleep 10s
+echo "wait for the kube-bench to execute..."
+sleep 10s
 ```
 
 # Let's take a look at the **`kube-bench`** output
 ```console
-$ kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
+kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
 ```
 
 The results from running the kube-bench would be similar to the following:
 
 
-```python
+```javascript
 [INFO] 2 Worker Node Security Configuration
 [INFO] 2.1 Kubelet
 [PASS] 2.1.1 Ensure that the --anonymous-auth argument is set to false (Scored)
