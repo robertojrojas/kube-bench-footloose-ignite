@@ -40,7 +40,7 @@ $ sudo apt-get install libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev \
 sudo usermod -aG libvirt $USER
 ```
 
-# Install the [vagrant-libvirt](https://github.com/vagrant-libvirt/ plugin
+# Install the [vagrant-libvirt](https://github.com/vagrant-libvirt/) plugin
 ```console
 vagrant plugin install vagrant-libvirt
 ```
