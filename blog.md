@@ -136,6 +136,62 @@ cd ..
 # sed "s,<ABSOLUTE_PATH>,$(pwd),g" footloose.yaml.k8s > footloose.yaml.k8s.mod
 ```
 
+# Let's take a look at the `footloose.yaml.k8s` file
+```v
+cluster:
+  name: cluster
+  privateKey: cluster-key
+machines:
+- count: 1
+  spec:
+    image: robertojrojas/ignite-kubeadm:kluster-v1
+    name: master%d
+    portMappings:
+    - containerPort: 22
+    backend: ignite
+    ignite:
+      copyFiles:
+        "<ABSOLUTE_PATH>/run/config.yaml": "/kubeadm.yaml"
+        "<ABSOLUTE_PATH>/run/pki/ca.crt": "/etc/kubernetes/pki/ca.crt"
+        "<ABSOLUTE_PATH>/run/pki/ca.key": "/etc/kubernetes/pki/ca.key"
+        "<ABSOLUTE_PATH>/k8s-master.sh": "/usr/bin/kluster.sh"
+- count: 1
+  spec:
+    image: robertojrojas/ignite-kubeadm:kluster-v1
+    name: worker%d
+    portMappings:
+    - containerPort: 22
+    backend: ignite
+    ignite:
+      copyFiles:
+        "<ABSOLUTE_PATH>/run/k8s-vars.sh": "/etc/profile.d/02-k8s.sh"
+        "<ABSOLUTE_PATH>/run/config-join.yaml": "/kubeadm-join.yaml"
+        "<ABSOLUTE_PATH>/k8s-worker.sh": "/usr/bin/kluster.sh"
+        "<ABSOLUTE_PATH>/run/admin.conf": "/admin.conf"
+
+```
+
+The `backend: ignite` property informs Footloose that it needs to execute `ignite`
+to instantiate the VMs.
+The `ignite:` property takes a number of properties to be passed to `ignite` at the
+time of execution.
+Here is a snippet of possible `ignite` properties that could be used here:
+
+```v
+...
+    backend: ignite
+    ignite:
+      cpus: 2
+      memory: 4GB
+      diskSize: 30GB
+      kernel: "weaveworks/ignite-kernel:4.19.47"
+      copyFiles:
+        "<ABSOLUTE_PATH>/run/pki/ca.crt": "/etc/kubernetes/pki/ca.crt"
+        "<ABSOLUTE_PATH>/run/pki/ca.key": "/etc/kubernetes/pki/ca.key"
+...
+```
+
+
 # Get Kubernetes scripts
 
 ```console
@@ -203,19 +259,61 @@ waiting for worker to be ready...
 ....
 ```
 
-# After 3-5 minutes, the worker should have joined the k8s cluster, Let's get deploy the kube-bench
+# After 3-5 minutes, the worker should have joined the k8s cluster, Let's get deploy the **`kube-bench`**
 # and wait for the CIS benchmark to execute to completion.
 
 ```console
 # wget  https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/job-worker.yaml
+```
 
+# Let's take a look at the `job-worker.yaml` file
+```v
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-bench
+spec:
+  template:
+    spec:
+      hostPID: true
+      containers:
+      - name: kube-bench
+        image: robertojrojas/kube-bench:v0.0.34-i369
+        command: ["kube-bench", "--version", "1.13-json"]
+        volumeMounts:
+        - name: var-lib-kubelet
+          mountPath: /var/lib/kubelet
+        - name: etc-systemd
+          mountPath: /etc/systemd
+        - name: etc-kubernetes
+          mountPath: /etc/kubernetes
+      restartPolicy: Never
+      nodeSelector:
+        kube-bench: worker
+      volumes:
+      - name: var-lib-kubelet
+        hostPath:
+          path: "/var/lib/kubelet"
+      - name: etc-systemd
+        hostPath:
+          path: "/etc/systemd"
+      - name: etc-kubernetes
+        hostPath:
+          path: "/etc/kubernetes"
+      - name: usr-bin
+        hostPath:
+          path: "/usr/bin"
+```
+
+# Deploy the kube-bench manifest to the kubernetes cluster
+```console
 # kubectl apply -f job-worker.yaml
 
 # echo "wait for the kube-bench to execute..."
 # sleep 10s
 ```
 
-# Let's take a look at the kube-bench output
+# Let's take a look at the **`kube-bench`** output
 ```console
 $ kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
 ```
