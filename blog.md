@@ -169,6 +169,22 @@ chmod +x build-docker.sh
 cd ..
 ```
 
+# Get Kubernetes scripts
+
+```console
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/haproxy.cfg
+
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-master.sh
+
+wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-worker.sh
+
+chmod +x k8s-master.sh
+chmod +x k8s-worker.sh
+
+```
+
+
+
 # Get the footloose config file
 
 ```console
@@ -231,22 +247,6 @@ Here is a snippet of possible `ignite` properties that could be used here:
         "<ABSOLUTE_PATH>/run/pki/ca.key": "/etc/kubernetes/pki/ca.key"
 ...
 ```
-
-
-# Get Kubernetes scripts
-
-```console
-wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/haproxy.cfg
-
-wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-master.sh
-
-wget https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/master/k8s-worker.sh
-
-chmod +x k8s-master.sh
-chmod +x k8s-worker.sh
-
-```
-
 
 ## Instantiate the cluster vms
 
