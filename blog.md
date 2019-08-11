@@ -30,6 +30,22 @@ The following diagram depicts the scenario I'll be covering:
 
 ![Footoolose-Ignite-k8s-kube-bench](kubench-ignite-integration.png)
 
+
+# Install [Libvirt](https://libvirt.org/index.html) and [Vagrant](https://www.vagrantup.com/)
+```console
+$ sudo apt-get install libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev \
+     qemu qemu-kvm virt-manager \
+     libguestfs-tools vagrant
+
+sudo usermod -aG libvirt $USER
+```
+
+# Install the [vagrant-libvirt](https://github.com/vagrant-libvirt/ plugin
+```console
+vagrant plugin install vagrant-libvirt
+```
+
+
 Here is the [Vagrantfile](https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/blog/Vagrantfile):
 
 ```ruby
@@ -58,7 +74,7 @@ $ sudo -i
 # mkdir work && cd work
 ```
 
-# All the steps from this point forward will be performed under `root` priviledges 
+## **The following steps will be performed under `root` priviledges inside the Host VM** 
 
 # Dependencies
 
