@@ -32,7 +32,7 @@ The following diagram depicts the scenario I'll be covering:
 
 Here is a snippet of a Vagrantfile:
 
-```v
+```ruby
 Vagrant.configure("2") do |config|
 ...
 config.vm.box = "generic/ubuntu1804"
@@ -137,7 +137,7 @@ cd ..
 ```
 
 # Let's take a look at the `footloose.yaml.k8s` file
-```v
+```yaml
 cluster:
   name: cluster
   privateKey: cluster-key
@@ -177,7 +177,7 @@ The `ignite:` property takes a number of properties to be passed to `ignite` at 
 time of execution.
 Here is a snippet of possible `ignite` properties that could be used here:
 
-```v
+```yaml
 ...
     backend: ignite
     ignite:
@@ -243,13 +243,7 @@ Unable to connect to the server: EOF
 waiting for worker to be ready...
 Unable to connect to the server: EOF
 waiting for worker to be ready...
-waiting for worker to be ready...
 Unable to connect to the server: EOF
-waiting for worker to be ready...
-Unable to connect to the server: EOF
-waiting for worker to be ready...
-waiting for worker to be ready...
-waiting for worker to be ready...
 waiting for worker to be ready...
 waiting for worker to be ready...
 ....
@@ -267,7 +261,7 @@ waiting for worker to be ready...
 ```
 
 # Let's take a look at the `job-worker.yaml` file
-```v
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -321,7 +315,7 @@ $ kubectl logs $(kubectl get pod --no-headers | grep kube | awk '{print $1}')
 The results from running the kube-bench would be similar to the following:
 
 
-```v
+```python
 [INFO] 2 Worker Node Security Configuration
 [INFO] 2.1 Kubelet
 [PASS] 2.1.1 Ensure that the --anonymous-auth argument is set to false (Scored)
