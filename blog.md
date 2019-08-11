@@ -30,18 +30,22 @@ The following diagram depicts the scenario I'll be covering:
 
 ![Footoolose-Ignite-k8s-kube-bench](kubench-ignite-integration.png)
 
-Here is a snippet of a Vagrantfile:
+Here is the [Vagrantfile](https://raw.githubusercontent.com/robertojrojas/kube-bench-footloose-ignite/blog/Vagrantfile):
 
 ```ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 Vagrant.configure("2") do |config|
-...
-config.vm.box = "generic/ubuntu1804"
-...
-config.vm.provider :libvirt do |domain|
+
+  config.vm.box = "generic/ubuntu1804"
+
+  config.vm.provider :libvirt do |domain|
     domain.memory = 4048
     domain.cpus = 6
+  end
+
 end
-...
 ``` 
 
 # Start the Host VM
@@ -65,6 +69,28 @@ apt-get update && apt-get install -y --no-install-recommends dmsetup openssh-cli
 ```
 
 # Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) 
+
+```console
+apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+apt-get install docker-ce docker-ce-cli containerd.io
+
+# Test Docker
+docker run hello-world
+
+```
 
 # Install Go https://golang.org/dl/
 ```console
