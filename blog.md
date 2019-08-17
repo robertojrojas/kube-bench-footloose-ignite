@@ -146,7 +146,9 @@ cd ..
 
 # Install kubectl
 ```console
-wget https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl  chmod +x kubectl
+export K8S_VERSION=v1.15.2
+wget https://storage.googleapis.com/kubernetes-release/release/${K8S_VERSION}/bin/linux/amd64/kubectl  
+chmod +x kubectl
 mv kubectl /usr/local/bin
 ```
 
