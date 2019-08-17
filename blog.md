@@ -87,7 +87,7 @@ apt-get update && apt-get install -y --no-install-recommends dmsetup openssh-cli
 # Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) 
 
 ```console
-apt-get install \
+apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -101,7 +101,7 @@ add-apt-repository \
    $(lsb_release -cs) \
    stable"
 
-apt-get install docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Test Docker
 docker run hello-world
@@ -110,7 +110,8 @@ docker run hello-world
 
 # Install Go https://golang.org/dl/
 ```console
-wget -c https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz -O - | tar -C /usr/local  -xz
+export GO_VERSION=1.12.9
+wget -c https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -O - | tar -C /usr/local  -xz
 export PATH=/usr/local/go/bin:$PATH
 ```
 
